@@ -59,25 +59,50 @@ class Solution {
     public int minSubArrayLen(int target, int[] nums) {
 
         int len = nums.length;
-        int left = 0;
-        int right = 0;
-        int min = Integer.MAX_VALUE;
-        int sum = 0;
-        while (right<len){
-            sum+= nums[right];
-
-            while (sum>=target){
-                min = Math.min(min,right-left+1);
-                sum-= nums[left];
-                left++;
-            }
-            right++;
+        int[] preNum = new int[len+1];
+        preNum[0] = 0;
+        for (int i = 0; i < len; i++) {
+            preNum[i+1] = preNum[i] + nums[i];
         }
-        if(min == Integer.MAX_VALUE){
+
+        int min = len+1;
+        //从左到右遍历选择长度最小的区间
+        for (int left = 0; left < len; left++) {
+            for (int right = 0; right < len; right++) {
+                if(preNum[right+1] - preNum[left] >= target){
+                    min=Math.min(min,right-left+1);
+                }
+            }
+        }
+
+        if(min == len+1){
             return 0;
         }
         return min;
     }
+
+        public int minSubArrayLen2(int target, int[] nums) {
+
+            int len = nums.length;
+            int left = 0;
+            int right = 0;
+            int min = Integer.MAX_VALUE;
+            int sum = 0;
+            while (right<len){
+                sum+= nums[right];
+
+                while (sum>=target){
+                    min = Math.min(min,right-left+1);
+                    sum-= nums[left];
+                    left++;
+                }
+                right++;
+            }
+            if(min == Integer.MAX_VALUE){
+                return 0;
+            }
+            return min;
+        }
 
     int sum(int[] nums,int left,int right){
         int sum = 0;

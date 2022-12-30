@@ -50,26 +50,47 @@ public class MaximumSubarray{
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int maxSubArray(int[] nums) {
-        int length = nums.length;
-        if(length == 0) return 0;
-
-        //dp[i] 表示i这个位置最大子数组的和
-        int[] dp = new int[length];
-        dp[0] = nums[0];
+        int len = nums.length;
+        if (len == 0) return 0;
+        int[] preNum = new int[len+1];
+        preNum[0] = 0;
+        for (int i = 0; i < len; i++) {
+            preNum[i+1] = preNum[i] + nums[i];
+        }
 
         int max = nums[0];
-
-        for (int i = 1; i < length; i++) {
-            if(dp[i-1] > 0){
-                dp[i] = dp[i-1] + nums[i];
-            }else {
-                dp[i] = nums[i];
+        //枚举左界
+        for (int i = 0; i < len; i++) {
+            //枚举右界i
+            for (int j = i; j < len; j++) {
+                int temp = preNum[j+1] - preNum[i];
+                max = Math.max(temp,max);
             }
-
-            max = Math.max(max,dp[i]);
         }
         return max;
     }
+
+        public int maxSubArray2(int[] nums) {
+            int length = nums.length;
+            if(length == 0) return 0;
+
+            //dp[i] 表示i这个位置最大子数组的和
+            int[] dp = new int[length];
+            dp[0] = nums[0];
+
+            int max = nums[0];
+
+            for (int i = 1; i < length; i++) {
+                if(dp[i-1] > 0){
+                    dp[i] = dp[i-1] + nums[i];
+                }else {
+                    dp[i] = nums[i];
+                }
+
+                max = Math.max(max,dp[i]);
+            }
+            return max;
+        }
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
