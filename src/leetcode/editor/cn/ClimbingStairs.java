@@ -47,7 +47,41 @@ public class ClimbingStairs{
 class Solution {
     HashMap<Integer,Integer> hashMap = new HashMap<>();
 
+
         public int climbStairs(int n) {
+            if(n == 1){
+                return 1;
+            }
+            if(n == 2){
+                return 2;
+            }
+
+            int res=0;
+            int a = 1;
+            int b = 2;
+            for (int i = 3; i <= n; i++) {
+                res = a + b;
+                a = b;
+                b = res;
+            }
+
+            return res;
+
+        }
+
+        public int climbStairs4(int n) {
+            if(n == 1){
+                return 1;
+            }
+            if(n == 2){
+                return 2;
+            }
+
+            return climbStairs4(n-1) + climbStairs4(n-2);
+
+        }
+
+        public int climbStairs3(int n) {
 
             if(n < 2) return 1;
 
