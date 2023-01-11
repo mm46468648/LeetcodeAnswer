@@ -51,44 +51,29 @@ import java.util.Stack;
 public class ReverseInteger{
     public static void main(String[] args){
         Solution solution = new ReverseInteger().new Solution();
+        solution.reverse(-1234);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
     public int reverse(int x) {
-        Stack<Character> stack = new Stack<>();
-        String xs = String.valueOf(x);
-        char[] chars = xs.toCharArray();
-        boolean fushu = chars[0] == '-';
-        int startIndex = fushu?1:0;
-        for (int i = startIndex; i < chars.length; i++) {
-            stack.push(chars[i]);
-        }
-
-        StringBuilder sb = new StringBuilder();
-        if(fushu){
-            sb.append('-');
-        }
-
-        boolean startnotling = false;
-        while (!stack.isEmpty()){
-            Character pop = stack.pop();
-            if(pop!='0'){
-                startnotling = true;
-                sb.append(pop);
+        int res = 0;
+        while (x!=0){
+            //取末尾数字
+            int temp = x % 10;
+            //判断是否整形溢出
+            // 题目中说：环境只能存储 32 位大小的有符号整数，因此，需要提前判：断乘以 10 以后是否越界
+            if (res > Integer.MAX_VALUE / 10){
+                return 0;
             }
-
-            if(startnotling && pop=='0'){
-                sb.append(pop);
+            if (res < Integer.MIN_VALUE / 10){
+                return 0;
             }
+            x = x / 10;
+            res = res * 10 + temp;
 
         }
 
-        String s = sb.toString();
-        if(s.length() == 0) return 0;
-
-        return Integer.valueOf(s);
-
-
+        return res;
     }
 }
 //leetcode submit region end(Prohibit modification and deletion)
