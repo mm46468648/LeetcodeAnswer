@@ -51,7 +51,38 @@ public class NumberOfIslands{
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public int numIslands(char[][] grid) {
+
+        public int numIslands(char[][] grid) {
+            int isLandNum = 0;
+
+
+            for (int i = 0; i < grid.length; i++) {
+                for (int j = 0; j < grid[0].length; j++) {
+                    if(grid[i][j] == '1'){
+                        isLandNum++;
+                        dfs(grid,i,j);
+                    }
+                }
+            }
+            return isLandNum;
+        }
+
+        void dfs(char[][] grid,int row,int col){
+            int rl = grid.length;
+            int cl = grid[0].length;
+
+            if(row < 0 || col < 0 || row >= rl || col >= cl || grid[row][col] == '0'){
+                return;
+            }
+
+            grid[row][col] = '0';
+            dfs(grid,row,col+1);
+            dfs(grid,row,col-1);
+            dfs(grid,row+1,col);
+            dfs(grid,row-1,col);
+        }
+
+    public int numIslands2(char[][] grid) {
         int isLandNum = 0;
 
         int m = grid.length;
@@ -63,24 +94,25 @@ class Solution {
                 char c = grid[i][j];
                 if(c == '1'){
                     isLandNum++;
-                    dfs(i,j,m,n,grid);
+                    dfs2(i,j,m,n,grid);
                 }
             }
         }
         return isLandNum;
     }
 
-        private void dfs(int i, int j, int m, int n,char[][] grid) {
+
+        private void dfs2(int i, int j, int m, int n, char[][] grid) {
             //递归终止条件
             if(i < 0 || j<0 || i>=m || j>=n || grid[i][j] == '0'){
                 return;
             }
             //遇到一个1,就变成0
             grid[i][j] = '0';
-            dfs(i-1,j,m,n,grid);
-            dfs(i+1,j,m,n,grid);
-            dfs(i,j-1,m,n,grid);
-            dfs(i,j+1,m,n,grid);
+            dfs2(i-1,j,m,n,grid);
+            dfs2(i+1,j,m,n,grid);
+            dfs2(i,j-1,m,n,grid);
+            dfs2(i,j+1,m,n,grid);
         }
     }
 //leetcode submit region end(Prohibit modification and deletion)

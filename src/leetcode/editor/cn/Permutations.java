@@ -46,19 +46,52 @@ public class Permutations{
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
-    public List<List<Integer>> permute(int[] nums) {
+
+        List<List<Integer>> res = new ArrayList<>();
+        int len;
+        public List<List<Integer>> permute(int[] nums) {
+            len = nums.length;
+            boolean[] used = new boolean[len];
+            Deque<Integer> path = new ArrayDeque<>();
+            dfs(0,nums,path,used);
+
+            return res;
+        }
+
+
+        void dfs(int n ,int[] nums,Deque<Integer> path,boolean[] used){
+            if(n == len){
+                res.add(new ArrayList<>(path));
+                return;
+            }
+
+            for (int i = 0; i < len; i++) {
+                if(!used[i]){
+                    path.addLast(nums[i]);
+                    used[i] = true;
+                    dfs(n+1,nums,path,used);
+                    used[i] = false;
+                    path.removeLast();
+                }
+            }
+        }
+
+    public List<List<Integer>> permute2(int[] nums) {
         List<List<Integer>> res = new ArrayList<>();
         int len= nums.length;
         if(len == 0) return res;
 
         boolean[] used = new boolean[len];
         Deque<Integer> path = new ArrayDeque<>();
-        dfs(nums,res,len,0,path,used);
+        dfs2(nums,res,len,0,path,used);
 
         return res;
     }
 
-        private void dfs(int[] nums,List<List<Integer>> res, int len, int depth, Deque<Integer> path, boolean[] used) {
+
+
+
+        private void dfs2(int[] nums, List<List<Integer>> res, int len, int depth, Deque<Integer> path, boolean[] used) {
             if(depth == len){
                 res.add(new ArrayList<>(path));
                 return;
@@ -70,7 +103,7 @@ class Solution {
                 }
                 path.push(nums[i]);
                 used[i] = true;
-                dfs(nums,res,len,depth+1,path,used);
+                dfs2(nums,res,len,depth+1,path,used);
                 used[i] = false;
                 path.pop();
             }

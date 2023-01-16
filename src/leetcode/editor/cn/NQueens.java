@@ -39,24 +39,25 @@
 
 package leetcode.editor.cn;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
 //java:N 皇后
 public class NQueens{
     public static void main(String[] args){
         Solution solution = new NQueens().new Solution();
-        solution.solveNQueens(4);
     }
     //leetcode submit region begin(Prohibit modification and deletion)
 class Solution {
 //        String[] strs = new String[]{"Q","."};
 
+        boolean[] col;      //列记录
+
         boolean[] main;     //主对角线
         boolean[] sub;     //副对角线
-        boolean[] col;      //列记录
+
+        HashSet<Integer> mainSet;
+        HashSet<Integer> subSet;
+
         List<List<String>> res;
         int len;
     public List<List<String>> solveNQueens(int n) {
@@ -66,13 +67,38 @@ class Solution {
         this.main = new boolean[2 * n - 1];
         this.sub = new boolean[2 * n - 1];
 
-
+        mainSet = new HashSet<>();
+        subSet = new HashSet<>();
         Deque<Integer> queue = new ArrayDeque<>();
         dfs(0,queue);
         return res;
     }
 
-        private void dfs(int row, Deque<Integer> path) {
+    void dfs(int row ,Deque<Integer> path){
+        if(row == len){
+            List<String> strings = convertToCombine(len, path);
+            res.add(strings);
+        }
+
+        for (int i = 0; i < len; i++) {
+            if(!col[i] && !mainSet.contains(row-i) && !subSet.contains(row + i)){
+                path.addLast(i);
+                col[i] = true;
+                mainSet.add(row-i);
+                subSet.add(row+i);
+                dfs(row+1,path);
+                mainSet.remove(row - i);
+                subSet.remove(row + i);
+                col[i] = false;
+                path.removeLast();
+            }
+        }
+
+    }
+
+
+
+        private void dfs2(int row, Deque<Integer> path) {
             if(row == len){
                 res.add(convertToCombine(len,path));
                 return;
@@ -85,7 +111,7 @@ class Solution {
                     col[i] = true;
                     main[row-i + len-1] =true;
                     sub[row+i] = true;
-                    dfs(row+1,path);
+                    dfs2(row+1,path);
                     col[i] = false;
                     main[row-i + len-1] =false;
                     sub[row+i] = false;
