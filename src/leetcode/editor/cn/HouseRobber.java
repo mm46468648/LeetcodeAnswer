@@ -49,21 +49,45 @@ public class HouseRobber {
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
 
-        HashMap<Integer,Integer> hashMap = new HashMap<>();
 
+        /**
+         * 双指针循环计数
+         * @param nums
+         * @return
+         */
         public int rob(int[] nums) {
             int n = nums.length;
+
+            int a = 0;
+            int b = nums[0];
+
+            for (int i = 2; i <= n; i++) {
+                int temp = b;
+                b = Math.max(b, a + nums[i - 1]);
+                a = temp;
+            }
+            return b;
+        }
+
+        /**
+         * 记忆化搜索
+         * @param nums
+         * @return
+         */
+        public int rob3(int[] nums) {
+            int n = nums.length;
             //递推
-            int[] dp = new int[n+1];
+            int[] dp = new int[n + 1];
             dp[0] = 0;
             dp[1] = nums[0];
 
             for (int i = 2; i <= n; i++) {
-                dp[i] = Math.max(dp[i-1],dp[i-2] + nums[i-1]);
+                dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i - 1]);
             }
             return dp[n];
         }
 
+        HashMap<Integer,Integer> hashMap = new HashMap<>();
         public int rob2(int[] nums) {
 
             return rob2(nums,nums.length);
