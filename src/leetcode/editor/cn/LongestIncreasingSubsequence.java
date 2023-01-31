@@ -57,8 +57,27 @@ public class LongestIncreasingSubsequence {
 
     //leetcode submit region begin(Prohibit modification and deletion)
     class Solution {
-
         public int lengthOfLIS(int[] nums) {
+            int len = nums.length;
+            if(len == 0) return 0;
+
+            //dp[i] 到i这个位置,最大子序列的长度
+            int[] dp = new int[len];
+            int max = 1;
+            Arrays.fill(dp,1);
+            for (int i = 1; i < len; i++) {
+                for (int j = 0; j < i; j++) {
+                    if(nums[i] > nums[j]){
+                        dp[i] = Math.max(dp[i],dp[j]+1);
+                    }
+                }
+
+                max = Math.max(max,dp[i]);
+            }
+            return max;
+        }
+
+        public int lengthOfLIS2(int[] nums) {
             int len = nums.length;
             if(len == 0) return 0;
 
